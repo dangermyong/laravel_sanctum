@@ -7,5 +7,20 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    use HttpResponses;
+  use HttpResponses;
+
+  public function login()
+  {
+    return 'this is my login method';
+  }
+
+  public function register()
+  {
+    return response()->json('This is my register method');
+  }
+
+  public function logout()
+  {
+    return response()->json('This is my logout method');
+  }
 }
