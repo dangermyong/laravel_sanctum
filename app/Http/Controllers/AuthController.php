@@ -6,15 +6,16 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
 
 class AuthController extends Controller
 {
   use HttpResponses;
 
-  public function login()
+  public function login(LoginUserRequest $request)
   {
-    return 'this is my login method';
+    $request->validated($request->all());
   }
 
   public function register(StoreUserRequest $request)
