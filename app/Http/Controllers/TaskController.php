@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTaskRequest;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use App\Http\Resources\TaskResource;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -14,17 +17,9 @@ class TaskController extends Controller
    */
   public function index()
   {
-    return response()->json('Test');
-  }
-
-  /**
-   * Show the form for creating a new resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function create()
-  {
-    //
+    return TaskResource::collection(
+      Task::where('user_id', Auth::user()->id)->get()
+    );
   }
 
   /**
@@ -33,9 +28,18 @@ class TaskController extends Controller
    * @param  \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\Response
    */
-  public function store(Request $request)
+  public function store(StoreTaskRequest $request)
   {
-    //
+    $request->validated($request->all());
+
+    $task = Task::create([
+      'user_id' => Auth::user()->id,
+      'name' => $request->name,
+      'description' => $request->description,
+      'priority' => $request->priority,
+    ]);
+
+    return new TaskResource($task);
   }
 
   /**
